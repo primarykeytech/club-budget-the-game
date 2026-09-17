@@ -1,3 +1,4 @@
+
 # Club Budget: The Game 🧮🎮
 
 An 8-bit state-machine-driven resource management simulation built with **[Pyxel](https://github.com/kitao/pyxel)**, designed primarily for afterschool math clubs.
@@ -46,6 +47,14 @@ The simulation weaves Common Core 5th-grade math topics directly into gameplay c
 | **`M`** | Toggle audio mute |
 | **`R`** | Restart game (after Game Over or Victory) |
 | **`Q`** | Quit game |
+
+<img width="748" height="596" alt="Screenshot 2026-09-17 092311" src="https://github.com/user-attachments/assets/2fcff91b-bd07-4559-9288-6e2df8964e49" />
+
+<img width="758" height="576" alt="Screenshot 2026-09-17 092335" src="https://github.com/user-attachments/assets/b2db5e2d-3752-4ac2-abb3-a3e10ed2ec31" />
+
+<img width="768" height="576" alt="Screenshot 2026-09-17 092353" src="https://github.com/user-attachments/assets/85c2710d-ee69-4778-b362-e1b604ab2ce9" />
+
+<img width="763" height="573" alt="Screenshot 2026-09-17 092649" src="https://github.com/user-attachments/assets/ab9ec981-8078-43cf-8431-8540093663e3" />
 
 ---
 
