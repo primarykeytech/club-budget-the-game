@@ -1,0 +1,433 @@
+[
+  {
+    "id": "pencils_shortage",
+    "title": "Supply Crisis: Pencils!",
+    "speaker": "Coach",
+    "description": "The math tournament is in two weeks and our pencil bucket is practically empty!",
+    "choices": [
+      {
+        "id": "dollar_store",
+        "text": "1. Bulk Economy Pencils ($0.25 ea)",
+        "cost_formula": "0.25 * students",
+        "effects": {
+          "students": -5,
+          "coaches": 0,
+          "parents": 6
+        },
+        "reaction": "The erasers smudge, but the club bank account barely felt a dent.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Each pencil costs $0.25. How much for all {students} students?",
+          "answer_formula": "0.25 * students",
+          "unit": "$",
+          "bonus_happiness": 5,
+          "penalty_cost": 2.0
+        }
+      },
+      {
+        "id": "mechanical_pencils",
+        "text": "2. Smooth Mechanical Pencils ($1.75 ea)",
+        "cost_formula": "1.75 * students",
+        "effects": {
+          "students": 14,
+          "coaches": 4,
+          "parents": -8
+        },
+        "reaction": "Kids are clicking furiously with joy! Parents question why we spent that much.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "At $1.75 each for {students} students, what is our total expense?",
+          "answer_formula": "1.75 * students",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 3.0
+        }
+      },
+      {
+        "id": "byop",
+        "text": "3. 'Bring Your Own Pencil' Policy ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": -16,
+          "coaches": -10,
+          "parents": -4
+        },
+        "reaction": "Five students forgot pencils. Practice turned into a frustrating search for pens.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "bake_sale_fundraiser",
+    "title": "Fundraiser: Math Bake Sale!",
+    "speaker": "Parent",
+    "description": "Parent volunteers offer to run a math-themed pastry sale after school to boost our treasury!",
+    "choices": [
+      {
+        "id": "large_bake_sale",
+        "text": "1. Deluxe Brownie & Pie Booth",
+        "cost_formula": "15.00",
+        "revenue_formula": "3.50 * students * 2",
+        "effects": {
+          "students": 10,
+          "coaches": 4,
+          "parents": 8
+        },
+        "reaction": "Huge hit! The smell of warm cookies drew the whole 5th grade hallway.",
+        "math_challenge": {
+          "type": "profit_calc",
+          "prompt": "Ingredients cost $15. We sell {students_x2} pastries at $3.50 ea. What is Net Profit?",
+          "answer_formula": "(3.50 * students * 2) - 15.00",
+          "unit": "$",
+          "bonus_happiness": 6,
+          "penalty_cost": 5.0
+        }
+      },
+      {
+        "id": "lemonade_stand",
+        "text": "2. Quick Lemonade & Cookie Stand",
+        "cost_formula": "6.00",
+        "revenue_formula": "1.50 * students * 2",
+        "effects": {
+          "students": 4,
+          "coaches": 2,
+          "parents": 4
+        },
+        "reaction": "Modest turnout, but steady sales earned useful pocket money for the club.",
+        "math_challenge": {
+          "type": "profit_calc",
+          "prompt": "Supply cost $6. We sold {students_x2} cups at $1.50 ea. What is Net Profit?",
+          "answer_formula": "(1.50 * students * 2) - 6.00",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 2.0
+        }
+      },
+      {
+        "id": "skip_fundraiser",
+        "text": "3. Skip Fundraiser - Focus on Drills",
+        "cost_formula": "0",
+        "revenue_formula": "0",
+        "effects": {
+          "students": -6,
+          "coaches": 6,
+          "parents": -4
+        },
+        "reaction": "Intense practice session, but the treasury remains tight and students are tired.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "competition_registration",
+    "title": "State Math Olympiad Entry",
+    "speaker": "Coach",
+    "description": "Registration for the Regional Math Olympiad is due. How many students do we enter?",
+    "choices": [
+      {
+        "id": "all_students",
+        "text": "1. Register Everyone ($8.00 per student)",
+        "cost_formula": "8.00 * students",
+        "effects": {
+          "students": 16,
+          "coaches": 8,
+          "parents": 10
+        },
+        "reaction": "Everyone is thrilled to participate! Parents love the inclusivity.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Registration fee is $8.00 per student for {students} students. Total cost?",
+          "answer_formula": "8.00 * students",
+          "unit": "$",
+          "bonus_happiness": 5,
+          "penalty_cost": 8.0
+        }
+      },
+      {
+        "id": "top_half",
+        "text": "2. Enter Top Half Only ($8.00 ea)",
+        "cost_formula": "8.00 * (students // 2)",
+        "effects": {
+          "students": -12,
+          "coaches": 6,
+          "parents": -10
+        },
+        "reaction": "Saves money, but the cut students felt left out and disappointed.",
+        "math_challenge": {
+          "type": "division_mult",
+          "prompt": "Half of {students} students go at $8.00 each ({half_students} students). Total cost?",
+          "answer_formula": "8.00 * (students // 2)",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 5.0
+        }
+      },
+      {
+        "id": "in_school_quiz",
+        "text": "3. Host Free In-School Math Contest ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": 2,
+          "coaches": -6,
+          "parents": -8
+        },
+        "reaction": "Fun and free, though missing the official state medals and certificates.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "snack_restock",
+    "title": "Meeting Snacks Dilemma",
+    "speaker": "Student",
+    "description": "After a 90-minute geometry session, the mathletes are hungry and losing focus!",
+    "choices": [
+      {
+        "id": "pizza_delivery",
+        "text": "1. Fresh Hot Pizza Delivery ($2.50 / student)",
+        "cost_formula": "2.50 * students",
+        "effects": {
+          "students": 18,
+          "coaches": 4,
+          "parents": -6
+        },
+        "reaction": "Cheesy goodness revives the room! Morale reaches an all-time peak.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Pizza costs $2.50 per student for {students} students. What is the total?",
+          "answer_formula": "2.50 * students",
+          "unit": "$",
+          "bonus_happiness": 5,
+          "penalty_cost": 4.0
+        }
+      },
+      {
+        "id": "bulk_pretzels",
+        "text": "2. Giant Bag of Pretzels ($0.40 / student)",
+        "cost_formula": "0.40 * students",
+        "effects": {
+          "students": 3,
+          "coaches": 4,
+          "parents": 6
+        },
+        "reaction": "Sensible, salty, and budget-friendly. Nobody is overjoyed, but nobody starves.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Bulk snacks cost $0.40 per student for {students} students. What is the cost?",
+          "answer_formula": "0.40 * students",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 2.0
+        }
+      },
+      {
+        "id": "tap_water",
+        "text": "3. Water Fountain Only ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": -15,
+          "coaches": -4,
+          "parents": -6
+        },
+        "reaction": "Stomachs grumbled louder than the clock ticking. Productivity tanked.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "club_tshirts",
+    "title": "Official Math Club T-Shirts!",
+    "speaker": "Parent",
+    "description": "The students want matching 'May The Pi Be With You' shirts for the competition season!",
+    "choices": [
+      {
+        "id": "screenprint_shirts",
+        "text": "1. Custom Printed Shirts ($7.25 / student)",
+        "cost_formula": "7.25 * students",
+        "effects": {
+          "students": 16,
+          "coaches": 8,
+          "parents": 4
+        },
+        "reaction": "The team looks so sharp! School spirit is radiating everywhere.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Shirts are $7.25 each for {students} members. What is our invoice total?",
+          "answer_formula": "7.25 * students",
+          "unit": "$",
+          "bonus_happiness": 6,
+          "penalty_cost": 6.0
+        }
+      },
+      {
+        "id": "iron_on_patches",
+        "text": "2. DIY Iron-On Badges ($1.50 / student)",
+        "cost_formula": "1.50 * students",
+        "effects": {
+          "students": 4,
+          "coaches": -2,
+          "parents": 8
+        },
+        "reaction": "It took two hours of ironing, but the savings were substantial.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Badges cost $1.50 each for {students} students. What is the total?",
+          "answer_formula": "1.50 * students",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 2.0
+        }
+      },
+      {
+        "id": "no_shirts",
+        "text": "3. Decline Shirts ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": -10,
+          "coaches": -4,
+          "parents": 2
+        },
+        "reaction": "Disappointment lingered. Other clubs strutted by in flashy jackets.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "math_buzzer_system",
+    "title": "Buzzer System for Math Bowl",
+    "speaker": "Coach",
+    "description": "To prepare for speed-round math bowl questions, the coach requests a lock-out buzzer system.",
+    "choices": [
+      {
+        "id": "pro_buzzers",
+        "text": "1. Electronic 8-Player Buzzer System ($48.00)",
+        "cost_formula": "48.00",
+        "effects": {
+          "students": 14,
+          "coaches": 12,
+          "parents": -4
+        },
+        "reaction": "Practice transformed into a fast-paced game show! Reaction times skyrocketed.",
+        "math_challenge": {
+          "type": "discount_calc",
+          "prompt": "Vendor offers a 25% educational coupon on a $48 system. What is the discounted price?",
+          "answer_formula": "48.00 * 0.75",
+          "unit": "$",
+          "bonus_happiness": 6,
+          "penalty_cost": 6.0
+        }
+      },
+      {
+        "id": "desk_bells",
+        "text": "2. Desk Hotel Call Bells ($12.00)",
+        "cost_formula": "12.00",
+        "effects": {
+          "students": 6,
+          "coaches": 4,
+          "parents": 4
+        },
+        "reaction": "Ding! Ding! It is noisy and low-tech, but gets the job done cleanly.",
+        "math_challenge": null
+      },
+      {
+        "id": "hand_raising",
+        "text": "3. Standard Hand Raising ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": -6,
+          "coaches": -8,
+          "parents": 0
+        },
+        "reaction": "Constant arguments over who put their hand up first slowed down practice.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "guest_mathematician",
+    "title": "Guest Speaker: Rocket Scientist",
+    "speaker": "Coach",
+    "description": "An aerospace engineer offers to give an interactive hands-on rocketry and geometry demo.",
+    "choices": [
+      {
+        "id": "honorarium_and_kits",
+        "text": "1. Speaker Honorarium & Mini-Rocket Kits ($3.50/student)",
+        "cost_formula": "3.50 * students",
+        "effects": {
+          "students": 16,
+          "coaches": 10,
+          "parents": 10
+        },
+        "reaction": "Incredible presentation! Several students decided on STEM careers on the spot.",
+        "math_challenge": {
+          "type": "decimal_mult",
+          "prompt": "Kits cost $3.50 per student for {students} members. Total investment?",
+          "answer_formula": "3.50 * students",
+          "unit": "$",
+          "bonus_happiness": 5,
+          "penalty_cost": 4.0
+        }
+      },
+      {
+        "id": "talk_only",
+        "text": "2. Video Call Presentation Only ($0)",
+        "cost_formula": "0",
+        "effects": {
+          "students": 4,
+          "coaches": 4,
+          "parents": 4
+        },
+        "reaction": "Interesting slides, though hands-on rocket launches would have been cooler.",
+        "math_challenge": null
+      }
+    ]
+  },
+  {
+    "id": "mathathon_pledge",
+    "title": "Fundraiser: 100-Problem Mathathon!",
+    "speaker": "Student",
+    "description": "Students seek sponsors to pledge $0.10 for each math challenge problem they solve correctly!",
+    "choices": [
+      {
+        "id": "full_mathathon",
+        "text": "1. Host the All-Saturday Mathathon",
+        "cost_formula": "8.00",
+        "revenue_formula": "0.10 * 80 * students",
+        "effects": {
+          "students": 10,
+          "coaches": 8,
+          "parents": 12
+        },
+        "reaction": "The community was thrilled to sponsor real math learning! Treasury swells.",
+        "math_challenge": {
+          "type": "multi_step",
+          "prompt": "Each student solved 80 problems earning $0.10/problem ($8.00/student). For {students} students minus $8 supplies, what is Net Profit?",
+          "answer_formula": "(0.10 * 80 * students) - 8.00",
+          "unit": "$",
+          "bonus_happiness": 6,
+          "penalty_cost": 4.0
+        }
+      },
+      {
+        "id": "mini_mathathon",
+        "text": "2. Quick 20-Problem Classroom Mathathon",
+        "cost_formula": "0",
+        "revenue_formula": "0.10 * 20 * students",
+        "effects": {
+          "students": 4,
+          "coaches": 4,
+          "parents": 6
+        },
+        "reaction": "Fast, easy, and raised a tidy sum without weekend overtime.",
+        "math_challenge": {
+          "type": "multi_step",
+          "prompt": "{students} students earn $2.00 each ($0.10 x 20). Total revenue?",
+          "answer_formula": "2.00 * students",
+          "unit": "$",
+          "bonus_happiness": 4,
+          "penalty_cost": 2.0
+        }
+      }
+    ]
+  }
+]

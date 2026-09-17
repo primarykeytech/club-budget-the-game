@@ -1,0 +1,57 @@
+[
+  {
+    "id": "broken_sharpener",
+    "title": "Crunch! Electric Sharpener Jammed",
+    "description": "Someone jammed a gummy candy into the heavy-duty pencil sharpener.",
+    "cost": 28.00,
+    "effects": {
+      "students": -4,
+      "coaches": -8,
+      "parents": 0
+    }
+  },
+  {
+    "id": "district_bus_fee",
+    "title": "District Transportation Surcharge",
+    "description": "District notified all afterschool clubs of a sudden $1.20 per student fuel surcharge.",
+    "cost_formula": "1.20 * students",
+    "effects": {
+      "students": 0,
+      "coaches": -6,
+      "parents": -6
+    }
+  },
+  {
+    "id": "calculator_battery_leak",
+    "title": "Acid Leak! Dead Calculator Batteries",
+    "description": "The reserve scientific calculators corroded over winter break. Replacement batteries needed!",
+    "cost": 18.50,
+    "effects": {
+      "students": -2,
+      "coaches": -6,
+      "parents": 0
+    }
+  },
+  {
+    "id": "anonymous_donor",
+    "title": "Surprise! Math Club Alum Donation",
+    "description": "A former math club champion sent a gift check to support young mathematicians!",
+    "cost": -45.00,
+    "effects": {
+      "students": 6,
+      "coaches": 8,
+      "parents": 8
+    }
+  },
+  {
+    "id": "hallway_poster_fine",
+    "title": "Tape Marks on School Wall Fine",
+    "description": "Custodial staff billed the club for special tape cleanup after club rush week.",
+    "cost": 15.00,
+    "effects": {
+      "students": -2,
+      "coaches": -5,
+      "parents": -4
+    }
+  }
+]
