@@ -77,6 +77,7 @@ class GameFSM:
 
     def start_new_game(self):
         """Initializes a fresh club simulation with player parameters."""
+        self.audio.stop_music()
         self.state = ClubState(
             club_name=self.setup_name,
             initial_budget=self.setup_budget,
@@ -104,7 +105,9 @@ class GameFSM:
 
         # Global Mute toggle
         if pyxel.btnp(pyxel.KEY_M):
-            self.audio.toggle_mute()
+            is_muted = self.audio.toggle_mute()
+            if not is_muted and self.current_state in (StateEnum.TITLE, StateEnum.SETUP):
+                self.audio.play_title_music()
 
         if self.current_state == StateEnum.TITLE:
             self._update_title()
@@ -124,6 +127,10 @@ class GameFSM:
             self._update_victory()
 
     def _update_title(self):
+        # Play title theme if not already running
+        if not self.audio.music_playing and not self.audio.muted:
+            self.audio.play_title_music()
+
         if pyxel.btnp(pyxel.KEY_RETURN) or pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.KEY_Z):
             self.audio.play(SoundManager.SOUND_CONFIRM)
             self.transition_to(StateEnum.SETUP)
@@ -308,12 +315,14 @@ class GameFSM:
     def _update_game_over(self):
         if pyxel.btnp(pyxel.KEY_R):
             self.transition_to(StateEnum.SETUP)
+            self.audio.play_title_music()
         elif pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
     def _update_victory(self):
         if pyxel.btnp(pyxel.KEY_R):
             self.transition_to(StateEnum.SETUP)
+            self.audio.play_title_music()
         elif pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
@@ -345,6 +354,13 @@ class GameFSM:
         # Decorative border
         pyxel.rectb(4, 4, 248, 184, COL_CYAN)
         pyxel.rectb(6, 6, 244, 180, COL_NAVY)
+
+        # Music and control status indicator in corners
+        audio_tag = "[M] Audio: OFF" if self.audio.muted else "[M] Audio: ON"
+        audio_col = COL_RED if self.audio.muted else COL_GREEN
+        pyxel.text(12, 12, audio_tag, audio_col)
+
+        pyxel.text(176, 12, "Theme: 8-Bit", COL_CYAN)
 
         # Title shadow and text
         pyxel.text(48, 38, "==========================", COL_DARK_GRAY)
@@ -453,18 +469,6 @@ class GameFSM:
             prefix = "> " if is_active else "  "
 
             pyxel.text(14, cy, f"{prefix}{choice.text}", col)
-
-            # Draw cost tag
-            if is_active:
-                if choice.cost > 0:
-                    cost_info = f"[-${choice.cost:.2f}]"
-                    pyxel.text(194, cy, cost_info, COL_ORANGE)
-                elif choice.revenue > 0:
-                    rev_info = f"[+${choice.revenue:.2f}]"
-                    pyxel.text(194, cy, rev_info, COL_GREEN)
-                else:
-                    pyxel.text(202, cy, "[FREE]", COL_CYAN)
-
             cy += 9
 
         # Footer hints

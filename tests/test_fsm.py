@@ -79,6 +79,13 @@ class TestGameFSM(unittest.TestCase):
         self.fsm.transition_to(StateEnum.VICTORY)
         self.fsm.draw()
 
+    def test_audio_theme_music(self):
+        # Verify title music plays and stops without error
+        self.fsm.audio.play_title_music()
+        self.assertTrue(self.fsm.audio.music_playing)
+        self.fsm.audio.stop_music()
+        self.assertFalse(self.fsm.audio.music_playing)
+
 
 if __name__ == "__main__":
     unittest.main()
