@@ -30,23 +30,13 @@ def draw_box(x: int, y: int, w: int, h: int, bg_col: int = COL_NAVY, border_col:
     pyxel.rectb(x + 2, y + 2, w - 4, h - 4, COL_DARK_GRAY)
 
 
-def draw_happiness_bar(x: int, y: int, label: str, value: float, width: int = 40):
-    """Draws a labeled health/happiness bar with color thresholds."""
-    # Label
-    pyxel.text(x, y, label, COL_LIGHT_GRAY)
-    bx = x + 44
-    by = y
+def draw_happiness_bar(x: int, y: int, label: str, value: float, width: int = 72):
+    """Draws a labeled health/happiness gauge with separate label/percentage line and bar line."""
+    val_clamped = max(0.0, min(100.0, value))
     bw = width
-    bh = 5
-
-    # Background frame
-    pyxel.rect(bx, by, bw, bh, COL_BLACK)
-    pyxel.rectb(bx, by, bw, bh, COL_DARK_GRAY)
+    bh = 4
 
     # Threshold colors
-    val_clamped = max(0.0, min(100.0, value))
-    fill_w = int((val_clamped / 100.0) * (bw - 2))
-
     if val_clamped >= 80:
         bar_col = COL_GREEN
     elif val_clamped >= 50:
@@ -57,55 +47,64 @@ def draw_happiness_bar(x: int, y: int, label: str, value: float, width: int = 40
         # Flashing red when in the immediate-loss danger zone (<40)
         bar_col = COL_RED if (pyxel.frame_count // 6) % 2 == 0 else COL_WHITE
 
-    if fill_w > 0:
-        pyxel.rect(bx + 1, by + 1, fill_w, bh - 2, bar_col)
-
-    # Percentage text
+    # Line 1: Label and percentage (e.g. "STUDENT: 82%")
     pct_str = f"{int(val_clamped)}%"
-    pyxel.text(bx + bw + 4, y, pct_str, bar_col)
+    pyxel.text(x, y, f"{label}:", COL_LIGHT_GRAY)
+    # Right-align percentage within the gauge width
+    px = x + bw - len(pct_str) * 4
+    pyxel.text(px, y, pct_str, bar_col)
+
+    # Line 2: Progress bar frame and fill
+    by = y + 7
+    pyxel.rect(x, by, bw, bh, COL_BLACK)
+    pyxel.rectb(x, by, bw, bh, COL_DARK_GRAY)
+
+    fill_w = int((val_clamped / 100.0) * (bw - 2))
+    if fill_w > 0:
+        pyxel.rect(x + 1, by + 1, fill_w, bh - 2, bar_col)
 
 
 def draw_hud(state, flash_timer: int = 0):
-    """Renders the persistent top status dashboard."""
-    # Header bar
-    pyxel.rect(0, 0, 256, 30, COL_NAVY)
-    pyxel.line(0, 30, 256, 30, COL_DARK_GRAY)
+    """Renders the persistent top status dashboard with clean, non-overlapping rows."""
+    # Header bar (Height 35px: y=0 to 35)
+    pyxel.rect(0, 0, 256, 35, COL_NAVY)
+    pyxel.line(0, 35, 256, 35, COL_DARK_GRAY)
 
-    # Row 1: Club name, Week counter, Budget balance
+    # Row 1 (y=3): Club name, Week counter, Budget balance
     club_tag = state.club_name[:16].upper()
-    pyxel.text(6, 4, club_tag, COL_YELLOW)
+    pyxel.text(8, 3, club_tag, COL_YELLOW)
 
     week_str = f"WEEK {state.current_week:02d}/{state.total_weeks:02d}"
-    pyxel.text(104, 4, week_str, COL_WHITE)
+    pyxel.text(104, 3, week_str, COL_WHITE)
 
-    # Budget balance (flashes red/green on changes)
+    # Budget balance (flashes on recent transactions)
     money_col = COL_GREEN if state.budget >= 100 else (COL_YELLOW if state.budget >= 40 else COL_RED)
     if flash_timer > 0 and (pyxel.frame_count // 4) % 2 == 0:
         money_col = COL_WHITE
 
     budget_str = f"${state.budget:0.2f}"
-    # Right-align budget
-    bx = 250 - len(budget_str) * 4
-    pyxel.text(bx, 4, budget_str, money_col)
+    bx = 248 - len(budget_str) * 4
+    pyxel.text(bx, 3, budget_str, money_col)
 
-    # Row 2: Three happiness gauges
-    draw_happiness_bar(6, 14, "STUDENT", state.happiness["students"], width=34)
-    draw_happiness_bar(88, 14, "COACH", state.happiness["coaches"], width=34)
-    draw_happiness_bar(168, 14, "PARENT", state.happiness["parents"], width=34)
+    # Rows 2 & 3 (y=11 for labels/pct, y=18 for bars):
+    # 3 neatly spaced columns: x=8, x=92, x=176 (each width 72, with 12px margins)
+    draw_happiness_bar(8, 11, "STUDENT", state.happiness["students"], width=72)
+    draw_happiness_bar(92, 11, "COACH", state.happiness["coaches"], width=72)
+    draw_happiness_bar(176, 11, "PARENT", state.happiness["parents"], width=72)
 
-    # Danger indicator if any score is in danger (<40)
+    # Row 4 (y=26): Burn rate and danger warnings on their own dedicated line
     min_score = min(state.happiness.values())
     if min_score < 45:
         if (pyxel.frame_count // 8) % 2 == 0:
-            pyxel.text(6, 22, "! MORALE DANGER (LOSS AT <40%) !", COL_RED)
+            pyxel.text(8, 26, "! MORALE DANGER: SCORE <40% CAUSES IMMEDIATE LOSS !", COL_RED)
     elif state.budget < 30.0:
         if (pyxel.frame_count // 8) % 2 == 0:
-            pyxel.text(6, 22, "! LOW BUDGET DANGER !", COL_ORANGE)
+            pyxel.text(8, 26, "! LOW BUDGET DANGER: DON'T GO BROKE !", COL_ORANGE)
     else:
         # Safe pace indicator
         weeks_left = max(1, state.total_weeks - state.current_week + 1)
         safe_allowance = state.budget / weeks_left
-        pyxel.text(6, 22, f"Target Burn Rate: ~${safe_allowance:.2f}/wk", COL_CYAN)
+        pyxel.text(8, 26, f"Target Burn Rate: ~${safe_allowance:.2f}/wk", COL_CYAN)
 
 
 def draw_word_wrapped(x: int, y: int, text: str, max_chars_per_line: int, col: int, line_height: int = 7) -> int:
@@ -140,31 +139,31 @@ def draw_word_wrapped(x: int, y: int, text: str, max_chars_per_line: int, col: i
 
 def draw_vignette_stage(speaker: str, happiness_dict: Dict[str, float], icon_type: str = "chalkboard"):
     """Draws the central 8-bit stage showing animated characters reacting to the scene."""
-    stage_x, stage_y, stage_w, stage_h = 0, 31, 256, 62
+    stage_x, stage_y, stage_w, stage_h = 0, 36, 256, 58
 
     # Classroom chalkboard background
     pyxel.rect(stage_x, stage_y, stage_w, stage_h, COL_DARK_GREEN)
     pyxel.rectb(stage_x, stage_y, stage_w, stage_h, COL_BROWN)
     pyxel.rectb(stage_x + 1, stage_y + 1, stage_w - 2, stage_h - 2, COL_BROWN)
 
-    # Chalk math symbols doodled on the board
-    pyxel.text(10, 36, "pi = 3.1415...", COL_LIGHT_GRAY)
-    pyxel.text(190, 36, "E = mc^2", COL_LIGHT_GRAY)
-    pyxel.text(12, 78, "A = 0.5*b*h", COL_LIGHT_GRAY)
-    pyxel.text(196, 78, "a^2+b^2=c^2", COL_LIGHT_GRAY)
+    # Chalk math symbols doodled along the top open area (no overlap with character tags)
+    pyxel.text(8, 39, "pi=3.14", COL_LIGHT_GRAY)
+    pyxel.text(86, 39, "A=1/2*b*h", COL_LIGHT_GRAY)
+    pyxel.text(148, 39, "a^2+b^2=c^2", COL_LIGHT_GRAY)
+    pyxel.text(214, 39, "E=mc^2", COL_LIGHT_GRAY)
 
     # Bobbing animation offset
     bob = (pyxel.frame_count // 16) % 2
 
     # Draw 3 Stakeholders across the room
-    # Student at X=60
+    # Student at X=52
     draw_student_sprite(52, 44 + bob, happiness_dict.get("students", 70), is_speaking=(speaker.lower() == "student"))
 
-    # Coach at X=120
-    draw_coach_sprite(114, 42 + (1 - bob), happiness_dict.get("coaches", 70), is_speaking=(speaker.lower() == "coach"))
+    # Coach at X=114
+    draw_coach_sprite(114, 43 + (1 - bob), happiness_dict.get("coaches", 70), is_speaking=(speaker.lower() == "coach"))
 
-    # Parent at X=180
-    draw_parent_sprite(176, 43 + bob, happiness_dict.get("parents", 70), is_speaking=(speaker.lower() == "parent"))
+    # Parent at X=176
+    draw_parent_sprite(176, 44 + bob, happiness_dict.get("parents", 70), is_speaking=(speaker.lower() == "parent"))
 
 
 def draw_student_sprite(x: int, y: int, happiness: float, is_speaking: bool = False):
