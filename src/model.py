@@ -206,6 +206,7 @@ class ScenarioManager:
         self.events_path = events_path
         self.scenarios_raw: List[Dict[str, Any]] = []
         self.events_raw: List[Dict[str, Any]] = []
+        self.season_deck: List[Dict[str, Any]] = []
         self.load_data()
 
     def load_data(self):
@@ -216,17 +217,54 @@ class ScenarioManager:
             with open(self.events_path, "r", encoding="utf-8") as f:
                 self.events_raw = json.load(f)
 
+    def start_season(self, total_weeks: int, keep_starter_week1: bool = True):
+        """Creates a randomized season deck for replayability.
+        
+        Week 1 defaults to the foundational starter scenario (e.g. supply crisis),
+        while subsequent weeks are drawn from a randomized, non-repeating shuffle.
+        """
+        if not self.scenarios_raw:
+            self.season_deck = []
+            return
+
+        if keep_starter_week1:
+            starter = self.scenarios_raw[0]
+            pool = [s for s in self.scenarios_raw[1:]]
+            deck = [starter]
+
+            # Fill remaining weeks with shuffled pools without immediate repetition
+            while len(deck) < total_weeks:
+                shuffled_pool = list(pool) if pool else [starter]
+                random.shuffle(shuffled_pool)
+                deck.extend(shuffled_pool)
+
+            self.season_deck = deck[:total_weeks]
+        else:
+            deck = []
+            while len(deck) < total_weeks:
+                shuffled_pool = list(self.scenarios_raw)
+                random.shuffle(shuffled_pool)
+                deck.extend(shuffled_pool)
+            self.season_deck = deck[:total_weeks]
+
     def get_scenario_for_week(self, week_num: int, state: ClubState) -> Scenario:
         """Returns a compiled scenario tailored to current club state."""
-        # Pick scenario cyclically or shuffled
-        idx = (week_num - 1) % len(self.scenarios_raw) if self.scenarios_raw else 0
-        raw = self.scenarios_raw[idx] if self.scenarios_raw else {
-            "id": "generic",
-            "title": "Weekly Planning",
-            "speaker": "Coach",
-            "description": "How should we organize this week's activities?",
-            "choices": []
-        }
+        # Ensure season deck is prepared
+        if not self.season_deck or len(self.season_deck) < state.total_weeks:
+            self.start_season(state.total_weeks)
+
+        if 0 <= week_num - 1 < len(self.season_deck):
+            raw = self.season_deck[week_num - 1]
+        elif self.scenarios_raw:
+            raw = self.scenarios_raw[(week_num - 1) % len(self.scenarios_raw)]
+        else:
+            raw = {
+                "id": "generic",
+                "title": "Weekly Planning",
+                "speaker": "Coach",
+                "description": "How should we organize this week's activities?",
+                "choices": []
+            }
 
         choices: List[Choice] = []
         for raw_c in raw.get("choices", []):

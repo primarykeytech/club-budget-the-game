@@ -167,25 +167,29 @@ def draw_vignette_stage(speaker: str, happiness_dict: Dict[str, float], icon_typ
 
 
 def draw_student_sprite(x: int, y: int, happiness: float, is_speaking: bool = False):
-    """Draws an 8-bit student sprite."""
+    """Draws an 8-bit student sprite with warm caramel/tan skin and dark curly hair."""
     # Speaking aura
     if is_speaking and (pyxel.frame_count // 6) % 2 == 0:
         pyxel.rectb(x - 3, y - 3, 26, 34, COL_YELLOW)
 
-    # Hair / Baseball cap backwards
+    # Hair (Dark curly hair peeking under cap)
+    pyxel.rect(x + 3, y + 2, 3, 4, COL_BLACK)
+    pyxel.rect(x + 14, y + 2, 3, 4, COL_BLACK)
+
+    # Red baseball cap (stylish angled cap)
     pyxel.rect(x + 5, y, 10, 5, COL_RED)
     pyxel.rect(x + 2, y + 2, 4, 3, COL_RED)  # cap brim
 
-    # Face
-    pyxel.rect(x + 4, y + 5, 12, 10, COL_PEACH)
+    # Face (Warm caramel/tan skin tone)
+    pyxel.rect(x + 4, y + 5, 12, 10, COL_ORANGE)
 
     # Eyes & Mouth based on happiness
     if happiness >= 80:
         # Happy eyes ^^
         pyxel.pset(x + 6, y + 8, COL_BLACK)
         pyxel.pset(x + 12, y + 8, COL_BLACK)
-        # Smile
-        pyxel.line(x + 7, y + 12, x + 11, y + 12, COL_RED)
+        # Bright smile
+        pyxel.line(x + 7, y + 12, x + 11, y + 12, COL_WHITE)
         pyxel.pset(x + 6, y + 11, COL_RED)
         pyxel.pset(x + 12, y + 11, COL_RED)
     elif happiness >= 50:
@@ -212,24 +216,28 @@ def draw_student_sprite(x: int, y: int, happiness: float, is_speaking: bool = Fa
 
 
 def draw_coach_sprite(x: int, y: int, happiness: float, is_speaking: bool = False):
-    """Draws an 8-bit math coach sprite with glasses and clipboard."""
+    """Draws an 8-bit Black math coach sprite with deep warm brown skin and gold glasses."""
     if is_speaking and (pyxel.frame_count // 6) % 2 == 0:
         pyxel.rectb(x - 3, y - 3, 28, 36, COL_YELLOW)
 
-    # Hair
-    pyxel.rect(x + 5, y, 12, 4, COL_BROWN)
+    # Hair (Neat black hair fade)
+    pyxel.rect(x + 5, y, 12, 4, COL_BLACK)
 
-    # Face
-    pyxel.rect(x + 5, y + 4, 12, 11, COL_PEACH)
+    # Face (Deep warm brown skin tone)
+    pyxel.rect(x + 5, y + 4, 12, 11, COL_BROWN)
 
-    # Glasses
-    pyxel.rectb(x + 5, y + 7, 5, 4, COL_CYAN)
-    pyxel.rectb(x + 12, y + 7, 5, 4, COL_CYAN)
-    pyxel.line(x + 10, y + 8, x + 12, y + 8, COL_CYAN)
+    # Gold/Yellow glasses that stand out sharply on brown skin
+    pyxel.rectb(x + 5, y + 7, 5, 4, COL_YELLOW)
+    pyxel.rectb(x + 12, y + 7, 5, 4, COL_YELLOW)
+    pyxel.line(x + 10, y + 8, x + 12, y + 8, COL_YELLOW)
+    # Eyes behind glasses
+    pyxel.pset(x + 7, y + 8, COL_BLACK)
+    pyxel.pset(x + 14, y + 8, COL_BLACK)
 
     # Mouth
     if happiness >= 80:
-        pyxel.line(x + 8, y + 13, x + 13, y + 13, COL_BLACK)
+        # Happy smile showing white teeth
+        pyxel.line(x + 8, y + 13, x + 13, y + 13, COL_WHITE)
         pyxel.pset(x + 7, y + 12, COL_BLACK)
         pyxel.pset(x + 14, y + 12, COL_BLACK)
     elif happiness >= 50:
@@ -256,14 +264,16 @@ def draw_coach_sprite(x: int, y: int, happiness: float, is_speaking: bool = Fals
 
 
 def draw_parent_sprite(x: int, y: int, happiness: float, is_speaking: bool = False):
-    """Draws an 8-bit parent booster sprite."""
+    """Draws an 8-bit East Asian booster parent sprite with sleek black hair and purple cardigan."""
     if is_speaking and (pyxel.frame_count // 6) % 2 == 0:
         pyxel.rectb(x - 3, y - 3, 26, 35, COL_YELLOW)
 
-    # Hair
-    pyxel.rect(x + 4, y, 13, 6, COL_DARK_GRAY)
+    # Hair (Sleek dark bob with bangs)
+    pyxel.rect(x + 4, y, 13, 5, COL_BLACK)
+    pyxel.rect(x + 3, y + 4, 3, 6, COL_BLACK)   # Left hair fringe
+    pyxel.rect(x + 15, y + 4, 3, 6, COL_BLACK)  # Right hair fringe
 
-    # Face
+    # Face (Peach skin tone)
     pyxel.rect(x + 5, y + 5, 11, 10, COL_PEACH)
 
     # Eyes & Mouth
@@ -275,13 +285,14 @@ def draw_parent_sprite(x: int, y: int, happiness: float, is_speaking: bool = Fal
     elif happiness >= 50:
         pyxel.line(x + 8, y + 12, x + 11, y + 12, COL_BLACK)
     else:
-        # Angry furrowed brow
+        # Angry / concerned furrowed brow
         pyxel.line(x + 6, y + 6, x + 8, y + 7, COL_BLACK)
         pyxel.line(x + 13, y + 6, x + 11, y + 7, COL_BLACK)
         pyxel.line(x + 8, y + 13, x + 12, y + 13, COL_RED)
 
-    # Jacket (Purple cardigan)
+    # Jacket (Purple cardigan with white inner shirt)
     pyxel.rect(x + 3, y + 15, 14, 12, COL_PURPLE)
+    pyxel.rect(x + 8, y + 15, 4, 4, COL_WHITE)  # White collar / blouse
 
     # Coffee mug in hand
     pyxel.rect(x + 16, y + 19, 4, 5, COL_WHITE)

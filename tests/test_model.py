@@ -163,6 +163,23 @@ class TestClubModel(unittest.TestCase):
                 self.assertEqual(len(c.math_challenge.options), 4)
                 self.assertIn(c.math_challenge.answer, c.math_challenge.options)
 
+    def test_start_season_shuffled_deck(self):
+        data_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
+        scen_path = os.path.join(data_dir, "scenarios.json")
+        evt_path = os.path.join(data_dir, "events.json")
+
+        sm = ScenarioManager(scen_path, evt_path)
+        sm.start_season(total_weeks=12, keep_starter_week1=True)
+
+        self.assertEqual(len(sm.season_deck), 12)
+        # Week 1 should be the starter scenario (Pencils)
+        self.assertEqual(sm.season_deck[0]["id"], "pencils_shortage")
+
+        # Weeks 2 through 8 should be a permutation of remaining scenarios
+        subsequent_ids = [s["id"] for s in sm.season_deck[1:8]]
+        self.assertNotIn("pencils_shortage", subsequent_ids)
+        self.assertEqual(len(set(subsequent_ids)), len(subsequent_ids))
+
 
 if __name__ == "__main__":
     unittest.main()

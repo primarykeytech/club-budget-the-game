@@ -84,6 +84,7 @@ class GameFSM:
             total_weeks=self.setup_weeks,
             starting_happiness=72,
         )
+        self.scenario_mgr.start_season(self.setup_weeks)
         self.current_state = StateEnum.WEEK_START
         self.state_timer = 0
         self.audio.play(SoundManager.SOUND_CONFIRM)

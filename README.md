@@ -1,8 +1,10 @@
 # Club Budget: The Game 🧮🎮
 
-An 8-bit state-machine-driven resource management simulation built with **[Pyxel](https://github.com/kitao/pyxel)**, designed specifically for afterschool math clubs.
+An 8-bit state-machine-driven resource management simulation built with **[Pyxel](https://github.com/kitao/pyxel)**, designed primarily for afterschool math clubs.
 
 Players take on the role of club treasurer and leadership, steering their math club through a full school year. You must make strategic budgetary decisions (supplies, competition travel, t-shirts, fundraisers, snacks) while balancing the happiness of three vital stakeholders: **Students**, **Coaches**, and **Parents**.
+
+**Full disclosure:**  This project was built with the assistance of an LLM. It was not, however, an entirely vibe-coded project. 
 
 ---
 
