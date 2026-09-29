@@ -222,6 +222,7 @@ class ScenarioManager:
         
         Week 1 defaults to the foundational starter scenario (e.g. supply crisis),
         while subsequent weeks are drawn from a randomized, non-repeating shuffle.
+        Each scenario appears exactly once per cycle before repeating.
         """
         if not self.scenarios_raw:
             self.season_deck = []
@@ -232,19 +233,27 @@ class ScenarioManager:
             pool = [s for s in self.scenarios_raw[1:]]
             deck = [starter]
 
-            # Fill remaining weeks with shuffled pools without immediate repetition
-            while len(deck) < total_weeks:
+            # Fill remaining weeks, cycling through pool without repetition
+            remaining_weeks = total_weeks - 1
+            while remaining_weeks > 0:
                 shuffled_pool = list(pool) if pool else [starter]
                 random.shuffle(shuffled_pool)
-                deck.extend(shuffled_pool)
+                # Only take what we need this cycle
+                weeks_to_add = min(len(shuffled_pool), remaining_weeks)
+                deck.extend(shuffled_pool[:weeks_to_add])
+                remaining_weeks -= weeks_to_add
 
             self.season_deck = deck[:total_weeks]
         else:
             deck = []
-            while len(deck) < total_weeks:
+            remaining_weeks = total_weeks
+            while remaining_weeks > 0:
                 shuffled_pool = list(self.scenarios_raw)
                 random.shuffle(shuffled_pool)
-                deck.extend(shuffled_pool)
+                # Only take what we need this cycle
+                weeks_to_add = min(len(shuffled_pool), remaining_weeks)
+                deck.extend(shuffled_pool[:weeks_to_add])
+                remaining_weeks -= weeks_to_add
             self.season_deck = deck[:total_weeks]
 
     def get_scenario_for_week(self, week_num: int, state: ClubState) -> Scenario:
